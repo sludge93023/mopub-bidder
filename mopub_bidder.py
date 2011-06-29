@@ -9,9 +9,15 @@ class MopubBidder(webapp.RequestHandler):
         
         bid_request = json.loads(self.request.body)
         if bid_request.get('imp').get('interstitial'):
-            bid_responses = make_json_response(request_id = "1234abcd", response_id = "5678efgh", bidder_seat = "seat123", impression_id = "something", bid_price = 20)
+            bid_responses = make_json_response(request_id = "1234abcd", 
+                                               response_id = "5678efgh", 
+                                               bidder_seat = "seat123", 
+                                               impression_id = "something", 
+                                               bid_price = 20)
         else:
-            bid_responses = make_json_response(request_id = "1234abcd", response_id = "5678efgh", bidder_seat = "seat123")
+            bid_responses = make_json_response(request_id = "1234abcd", 
+                                               response_id = "5678efgh", 
+                                               bidder_seat = "seat123")
 
         #logging.info("HERHEHEHEHE: %s"%bid_responses)
         
