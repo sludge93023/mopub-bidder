@@ -20,12 +20,6 @@ class MopubBidder(webapp.RequestHandler):
 application = webapp.WSGIApplication(
                                      [('/', MopubBidder)],
                                      debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
     
 def make_json_response(request_id=None,
                        response_id=None,
@@ -76,3 +70,9 @@ def _remove_nonetype_values(dirty_dict):
         if value is not None:
             clean_dict[key] = value
     return clean_dict
+
+def main():
+    run_wsgi_app(application)
+
+if __name__ == "__main__":
+    main()
