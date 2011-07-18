@@ -9,18 +9,10 @@ class MopubBidder(webapp.RequestHandler):
             called each time the auction is run. The mopub server expects
             a response within 70ms. """
         bid_request = json.loads(self.request.body)
-        if bid_request.get('imp').get('interstitial'):
-            bid_responses = make_json_response(request_id="1234abcd", 
-                                               response_id="5678efgh", 
-                                               bidder_seat="seat123", 
-                                               impression_id="something", 
-                                               bid_price=20)
-        else:
-            bid_responses = make_json_response(request_id="1234abcd", 
-                                               response_id="5678efgh", 
-                                               bidder_seat="seat123")
-
-        #logging.info("HERHEHEHEHE: %s"%bid_responses)
+        bid_responses = make_json_response(request_id="39flvja3", response_id="dv09gn3k", currency="USD", units=0, impression_id="eigu203f", 
+                                           bid_price=float(self.request.get("price", default_value=24.)), ad_id="adfo3btnt", ad_markup="<html></html>", 
+                                           ad_domain="http://www.mopubbidder.com", image_url="http://www.mopubbidderimageurl.com", campaign_id="afhjk234", 
+                                           creative_id="ajfwep420", n_url="http://www.mopub_response_url.com")
         
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.out.write(bid_responses)
@@ -40,8 +32,6 @@ def make_json_response(request_id=None,
                        not_bid_reason=None,
                        currency=None,
                        units=None,
-                       bidder_seat=None,
-                       group=None,
                        impression_id=None,
                        bid_price=None,
                        ad_id=None,
@@ -58,9 +48,7 @@ def make_json_response(request_id=None,
                     'nbr': not_bid_reason,
                     'cur': currency, 
                     'units': units,
-                    'seatbid': [{'seat': bidder_seat, 
-                                 'group': group, 
-                                 'bid': [{'impid': impression_id, 
+                    'seatbid': [{'bid': [{'impid': impression_id, 
                                           'price': bid_price, 
                                           'adid': ad_id,
                                           'nurl': n_url, 
@@ -72,8 +60,19 @@ def make_json_response(request_id=None,
                                           'attr': creative_attr}]
                                }]
                     }
-    bid_responses = json.dumps(bid_response)
-    return bid_responses
 
-#bid_response = {"id":"1234abcd","bidid":"5678efgh","seatbid":[{"seat": "seat123","bid":[{"impid": "something","price": 20,}]}]}
-#bid_response = {"id":"1234abcd","bidid":"5678efgh","seatbid":[{"seat": "seat123","bid":[]}]}
+    tl_dict = _remove_nonetype_values(tl_dict)
+    tl_dict['seatbid'][0] = _remove_nonetype_values(tl_dict['seatbid'][0])
+    tl_dict['seatbid'][0]['bid'][0] = _remove_nonetype_values(tl_dict['seatbid'][0]['bid'][0])
+
+    tl_dicts = json.dumps(tl_dict)
+    return tl_dicts
+
+def _remove_nonetype_values(dirty_dict):
+    """ We don't want our json to be full of 'None' responses, so we omit them
+        entirely. """
+    clean_dict = {}
+    for key, value in dirty_dict.iteritems():
+        if value is not None:
+            clean_dict[key] = value
+    return clean_dict
