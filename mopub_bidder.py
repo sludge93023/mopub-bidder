@@ -1,6 +1,6 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-import json
+import simplejson
 import logging
 
 class MopubBidder(webapp.RequestHandler):
@@ -8,9 +8,9 @@ class MopubBidder(webapp.RequestHandler):
         """ After registering with mopub marketplace, this method will be 
             called each time the auction is run. The mopub server expects
             a response within 70ms. """
-        bid_request = json.loads(self.request.body)
+        bid_request = simplejson.loads(self.request.body)
         bid_responses = make_json_response(request_id="39flvja3", response_id="dv09gn3k", currency="USD", units=0, impression_id="eigu203f", 
-                                           bid_price=float(self.request.get("price", default_value=24.)), ad_id="adfo3btnt", ad_markup="<html></html>", 
+                                           bid_price=float(self.request.get("price", default_value=24.)), ad_id="adfo3btnt", ad_markup="<html><b>hiii</b></html>", 
                                            ad_domain="http://www.mopubbidder.com", image_url="http://www.mopubbidderimageurl.com", campaign_id="afhjk234", 
                                            creative_id="ajfwep420", n_url="http://www.mopub_response_url.com")
         
@@ -43,7 +43,7 @@ def make_json_response(request_id=None,
                        creative_id=None,
                        creative_attr=None):
 
-    bid_response = {'id': request_id,
+    tl_dict = {'id': request_id,
                     'bidid': response_id,
                     'nbr': not_bid_reason,
                     'cur': currency, 
@@ -65,7 +65,7 @@ def make_json_response(request_id=None,
     tl_dict['seatbid'][0] = _remove_nonetype_values(tl_dict['seatbid'][0])
     tl_dict['seatbid'][0]['bid'][0] = _remove_nonetype_values(tl_dict['seatbid'][0]['bid'][0])
 
-    tl_dicts = json.dumps(tl_dict)
+    tl_dicts = simplejson.dumps(tl_dict)
     return tl_dicts
 
 def _remove_nonetype_values(dirty_dict):
