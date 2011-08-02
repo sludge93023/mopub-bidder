@@ -2,27 +2,24 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 import simplejson
 import logging
-from mk_crypto import encodeAES, decodeAES
-from Crypto.Cipher import AES
 
-default_api_key = '1234567890123456'
 class MopubBidder(webapp.RequestHandler):
     def post(self):
         """ After registering with mopub marketplace, this method will be 
             called each time the auction is run. The mopub server expects
             a response within 70ms. """
-        bid_request = simplejson.loads(decodeAES(default_api_key, self.request.body))
-        bid_responses = make_json_response(request_id="39flvja3", response_id="dv09gn3k", currency="USD", units=0, impression_id="eigu203f", 
+        bid_request = simplejson.loads(self.request.body)
+        bid_response = make_json_response(request_id="39flvja3", response_id="dv09gn3k", currency="USD", units=0, impression_id="eigu203f", 
                                            bid_price=float(self.request.get("price", default_value=24.)), ad_id="adfo3btnt", ad_markup="<html><b>hiii</b></html>", 
                                            ad_domain="http://www.mopubbidder.com", image_url="http://www.mopubbidderimageurl.com", campaign_id="afhjk234", 
-                                           creative_id="ajfwep420", n_url="http://www.mopub_response_url.com")
+                                           creative_id="ajfwep420")
         
         self.response.headers['Content-Type'] = 'text/plain'
-        self.response.out.write(encodeAES(default_api_key, bid_responses))
+        self.response.out.write(bid_response)
 
 application = webapp.WSGIApplication(
                                      [('/', MopubBidder)],
-                                     debug=True)
+                                    )
     
 def make_json_response(request_id=None,
                        response_id=None,
