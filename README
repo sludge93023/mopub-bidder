@@ -1,1 +1,8 @@
-We provide two examples of servers implementing simple bidding strategies.
+We provide two examples of servers implementing simple bidding strategies.   
+
+Our appengine_bidder provides a simple interface for dealing with large amounts
+of data. However for more complex algorithms, it may become difficult to respond
+within the 90ms window we allow for real-time bidders.
+
+Our tornado_bidder provides a more customizable interface, at the expense of 
+additional configuration time.
