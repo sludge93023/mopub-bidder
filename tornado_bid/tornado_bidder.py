@@ -8,7 +8,7 @@
     We recommend running 2 tornado instances per core on your machine
 """                 
 
-from bidder_utils import make_json_response
+from utils.bidder_utils import make_json_response
 import tornado.ioloop
 import tornado.web
 
