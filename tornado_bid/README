@@ -1,0 +1,34 @@
+This is the MoPub tornado_bidder. 
+
+It is built on tornado with an nginx frontend.
+
+Install tornado here:
+http://www.tornadoweb.org/
+
+Run 1 worker on port 8000 with: 
+$ python tornado_bidder.py       
+
+or run 4 workers on ports 8000 - 8003 with:
+$ python scripts start_tornadoes.py 
+
+We recommend running 2 tornado instances per core on your machine
+
+Install nginx as follows:
+http://wiki.nginx.org/Install
+
+To test that nginx is installed:
+$ sudo nginx -t  
+
+  the configuration file /etc/nginx/nginx.conf syntax is ok
+  configuration file /etc/nginx/nginx.conf test is successful        
+  
+We recommend modifying your nginx config to be similar to sample_nginx_conf
+
+restart nginx:
+$ sudo nginx -s stop
+$ sudo nginx
+
+Now modify the tornado_bidder within the !!!!!!!! to add your custom logic.
+restart your tornado servers:
+$ python start_tornadoes.py      
+$ python stop_tornadoes.py
