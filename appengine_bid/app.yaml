@@ -4,6 +4,10 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /noop
+  static_files: noop.txt
+  upload: noop.txt
+    
 - url: /.*
   script: mopub_bidder.py
   secure: optional
