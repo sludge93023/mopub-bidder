@@ -1,5 +1,5 @@
 application: mopub-bidder
-version: 1
+version: 6
 runtime: python
 api_version: 1
 
@@ -7,7 +7,11 @@ handlers:
 - url: /noop
   static_files: noop.txt
   upload: noop.txt
-    
+
+- url: /fake
+  static_files: fake.txt
+  upload: fake.txt
+
 - url: /.*
   script: mopub_bidder.py
   secure: optional
